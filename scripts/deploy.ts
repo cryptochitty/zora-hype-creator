@@ -1,9 +1,8 @@
-/// <reference types="node" />
+// Fix: Use ES module import for ethers, which is standard for TypeScript-based Hardhat projects.
+// This resolves the "Cannot find name 'require'" error.
+import { ethers } from "hardhat";
 
 async function main() {
-  // Fix: Get ethers from the Hardhat Runtime Environment to avoid import issues.
-  const { ethers } = require("hardhat");
-
   // --- IMPORTANT: FILL THIS VALUE BEFORE DEPLOYING THE FACTORY ---
   const platformFeeCollector = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"; // Your platform's fee collection address (using deployer for example)
   // --- END OF VALUES TO FILL ---
@@ -26,5 +25,7 @@ async function main() {
 
 main().catch((error) => {
   console.error(error);
-  process.exit(1);
+  // Fix: Use `process.exitCode` instead of `process.exit()` to signal an error.
+  // This avoids a TypeScript error when Node.js types are not properly resolved.
+  process.exitCode = 1;
 });
