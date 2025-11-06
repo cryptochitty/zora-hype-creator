@@ -1,0 +1,45 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <style>
+      .bg { fill: #111827; }
+      .title { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 72px; font-weight: bold; fill: #FFFFFF; }
+      .creator { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: normal; fill: #9CA3AF; }
+      .pool-label { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 36px; font-weight: bold; }
+      .pool-value { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 60px; font-weight: bold; fill: #FFFFFF; }
+      .supporter { fill: #00B159; }
+      .hatter { fill: #FF4136; }
+    </style>
+    <linearGradient id="grad-supporter" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00B159;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#111827;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad-hatter" x1="100%" y1="0%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#FF4136;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#111827;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <rect class="bg" width="1200" height="630" />
+
+  <rect x="0" y="0" width="1200" height="630" fill="url(#grad-supporter)" opacity="0.3"/>
+  <rect x="0" y="0" width="1200" height="630" fill="url(#grad-hatter)" opacity="0.3"/>
+
+  <g transform="translate(60, 80)">
+    <text class="title">GREG Token Hype</text>
+    <text y="70" class="creator">by greg</text>
+  </g>
+
+  <rect x="60" y="200" width="1080" height="4" fill="#374151"/>
+
+  <g transform="translate(150, 350)">
+    <text class="pool-label supporter">Supporters</text>
+    <text y="80" class="pool-value">$12,500</text>
+  </g>
+
+  <g transform="translate(750, 350)">
+    <text class="pool-label hatter">Hatters</text>
+    <text y="80" class="pool-value">$8,300</text>
+  </g>
+
+  <text x="600" y="580" text-anchor="middle" font-family="Helvetica" font-size="28" fill="#4B5563">ZoraHype - Click a button to play</text>
+</svg>
