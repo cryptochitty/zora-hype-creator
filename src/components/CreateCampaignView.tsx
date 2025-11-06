@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { CAMPAIGN_FACTORY_ADDRESS, CAMPAIGN_FACTORY_ABI } from '../constants';
-// ❌ Removed unused import → import { parseGwei } from 'viem';
 
 interface ZoraAssetMetadata {
   name?: string;
@@ -15,7 +14,8 @@ interface ZoraAssetMetadata {
 }
 
 export const CreateCampaignView: React.FC = () => {
-  const { isConnected, address } = useAccount();
+  // ✅ Removed unused `address`
+  const { isConnected } = useAccount();
   const [zoraLink, setZoraLink] = useState('');
   const [duration, setDuration] = useState(86400);
   const [isFetching, setIsFetching] = useState(false);
@@ -23,7 +23,13 @@ export const CreateCampaignView: React.FC = () => {
   const [meta, setMeta] = useState<ZoraAssetMetadata | null>(null);
   const [creatorAddress, setCreatorAddress] = useState<`0x${string}` | null>(null);
 
-  const { data: hash, writeContract, isPending: isSubmitting, error: contractError } = useWriteContract();
+  const {
+    data: hash,
+    writeContract,
+    isPending: isSubmitting,
+    error: contractError,
+  } = useWriteContract();
+
   const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
 
   useEffect(() => {
@@ -56,8 +62,8 @@ export const CreateCampaignView: React.FC = () => {
 
       let apiUrl = '';
       if (type === 'coin') {
-        const [chain, address] = parts[2].split(':');
-        apiUrl = `https://api.zora.co/coins/${chain}/${address}`;
+        const [chain, addr] = parts[2].split(':');
+        apiUrl = `https://api.zora.co/coins/${chain}/${addr}`;
       } else if (type === 'collect') {
         const [chain, contractAddress] = parts[2].split(':');
         const tokenId = parts[3];
@@ -68,9 +74,10 @@ export const CreateCampaignView: React.FC = () => {
 
       const res = await fetch(apiUrl);
       if (!res.ok) throw new Error(`Invalid or unsupported Zora asset. Status: ${res.status}`);
-      const data: ZoraAssetMetadata = await res.json();
 
+      const data: ZoraAssetMetadata = await res.json();
       const fetchedCreatorAddress = data.minter || data.owner;
+
       if (!fetchedCreatorAddress || !fetchedCreatorAddress.startsWith('0x')) {
         throw new Error("Could not automatically determine the creator's wallet address from the link.");
       }
@@ -137,6 +144,7 @@ export const CreateCampaignView: React.FC = () => {
         Enter a Zora NFT or Creator Coin link to fetch its metadata and create a hype campaign.
       </p>
 
+      {/* Step 1: Fetch Zora asset */}
       <form onSubmit={handleFetch} className="space-y-4 bg-gray-800 p-6 md:p-8 rounded-lg border border-gray-700">
         <div>
           <label htmlFor="zoraLink" className="block text-sm font-medium text-gray-300 mb-2">
@@ -163,12 +171,14 @@ export const CreateCampaignView: React.FC = () => {
         </div>
       </form>
 
+      {/* Step 2: Display preview + deploy form */}
       {meta && creatorAddress && (
         <form
           onSubmit={handleSubmit}
           className="mt-6 space-y-6 bg-gray-800 p-6 md:p-8 rounded-lg border border-gray-700 animate-fade-in"
         >
           <h3 className="text-xl font-bold text-center mb-4">Campaign Preview & Configuration</h3>
+
           <div className="bg-gray-900/50 rounded-lg p-4 flex flex-col sm:flex-row items-center gap-5 border border-gray-700">
             {meta.image && (
               <img
@@ -217,6 +227,7 @@ export const CreateCampaignView: React.FC = () => {
               {isSubmitting ? 'Check Wallet...' : isConfirming ? 'Deploying...' : 'Deploy Campaign'}
             </button>
           </div>
+
           {hash && <p className="text-center text-xs text-gray-400 break-all">Tx sent: {hash}</p>}
           {error && isSubmitting && <p className="text-red-400 text-xs mt-2">{error}</p>}
         </form>
